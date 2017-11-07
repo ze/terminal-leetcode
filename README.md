@@ -35,7 +35,7 @@ edit and share. You can find tag file of Facebook from tags directory.
 
 ---------------
 # Requirements
-- Python 2.7  
+- Python 3.5 
 - [Urwid](https://github.com/urwid/urwid)
 
 # Installation

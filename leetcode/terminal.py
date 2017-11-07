@@ -78,7 +78,8 @@ class Terminal(object):
             self.goto_view(self.make_quit_confirmation())
 
         elif key is 's':
-            self.goto_view(self.make_submit_confirmation())
+            if not self.is_home:
+                self.goto_view(self.make_submit_confirmation())
 
         elif not self.is_home and (key is 'left' or key is 'h'):
             self.go_back()
@@ -239,7 +240,7 @@ class Terminal(object):
                     result = ResultView(quiz, self.detail_view, r[1], loop=self.loop)
                     result.show()
                 except ValueError as e:
-                    toast = Toast(f'error: {e}')
+                    toast = Toast(f'error: {e}', 10 + len(str(e)), self.current_view, self.loop)
                     toast.show()
             delay_refresh(self.loop)
         else:
