@@ -51,8 +51,7 @@ class Quiz(object):
         r = retrieve(self.url)
         if r.status_code != 200:
             return False
-        text = r.text.encode('utf-8')
-        text = text.replace('<br>', '')
+        text = r.text.replace('<br>', '')
         bs = BeautifulSoup(text, 'lxml')
 
         if bs.find('form', 'form-signin'):
@@ -80,12 +79,12 @@ class Quiz(object):
 
             # get sample code
             language = format_language_text(config.language)
-            pattern = "\\'text\\':\s\\'%s\\',\s\\'defaultCode\\':\s\\'(.*?)\\'" % language
+            pattern = f"\\'text\\':\s\\'{language}\\',\s\\'defaultCode\\':\s\\'(.*?)\\'"
             self.sample_code = re.search(pattern, bs.prettify()).group(1).\
                   encode("utf-8").decode("unicode-escape").\
                   replace("\r\n", "\n")
             return True
-        except AttributeError, e:
+        except AttributeError as e:
             self.logger.error(e)
             return False
 
@@ -143,7 +142,7 @@ class Quiz(object):
                 else:
                     raise KeyError
         except KeyError:
-            return (-2, 'Unknow error')
+            return (-2, 'Unknown error')
 
 
 class Leetcode(object):
@@ -195,4 +194,3 @@ def format_language_text(language):
     language = language.replace('+', '\+')
     language = language.replace('#', '\#')
     return language
-

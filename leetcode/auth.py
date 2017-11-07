@@ -1,4 +1,4 @@
-import cookielib
+import http.cookiejar
 import requests
 import logging
 import os
@@ -22,7 +22,7 @@ headers = {
 }
 
 session = requests.Session()
-session.cookies = cookielib.LWPCookieJar(COOKIE_PATH)
+session.cookies = http.cookiejar.LWPCookieJar(COOKIE_PATH)
 try:
     session.cookies.load(ignore_discard=True)
 except:
@@ -35,7 +35,7 @@ class NetworkError(Exception):
         if not message or message == '':
             self.message = 'Network error!'
         else:
-            self.message = '%s code: %d' % (message, code)
+            self.message = f'{message} code: {code}'
         logger.error(self.message)
 
 def login():
@@ -79,4 +79,4 @@ def retrieve(url, headers=None, method='GET', data=None):
             r = session.post(url, headers=headers, data=data)
         return r
     except requests.exceptions.RequestException as e:
-        raise NetworkError('Network error: url: %s' % url)
+        raise NetworkError(f'Network error: url: {url}')

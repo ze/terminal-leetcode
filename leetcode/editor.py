@@ -1,6 +1,6 @@
 import os
 import subprocess
-from views.viewhelper import *
+from .views.viewhelper import *
 from .config import config
 
 def edit(filepath, loop):
@@ -35,5 +35,5 @@ def open_in_new_tmux_window(edit_cmd):
         pass
     cmd = "tmux split-window -h"
     os.system(cmd)
-    cmd = "tmux send-keys -t right '%s' C-m" % edit_cmd
+    cmd = f"tmux send-keys '{edit_cmd}' C-m"
     os.system(cmd)

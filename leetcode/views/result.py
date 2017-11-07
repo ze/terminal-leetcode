@@ -16,23 +16,23 @@ class ResultView(urwid.Frame):
         self.logger = logging.getLogger(__name__)
         if result:
             if 'status_code' not in result:
-                raise ValueError('Unknow result format: %s' % json.dumps(result))
+                raise ValueError(f'Unknown result format: {json.dumps(result)}')
             if result['status_code'] is 20:
                 self.listbox = self.make_compile_error_view()
             elif result['status_code'] is 10:
                 self.listbox = self.make_success_view()
             elif result['status_code'] is 11:
                 self.listbox = self.make_failed_view()
-            elif result['status_code'] is 12:# memeory limit exceeded
+            elif result['status_code'] is 12: # memory limit exceeded
                 self.listbox = self.make_unified_error_view("Memory Limit Exceeded")
-            elif result['status_code'] is 13:# output limit exceeded
+            elif result['status_code'] is 13: # output limit exceeded
                 self.listbox = self.make_unified_error_view("Output Limit Exceeded")
-            elif result['status_code'] is 14:# timeout
+            elif result['status_code'] is 14: # timeout
                 self.listbox = self.make_unified_error_view("Time Limit Exceeded")
             elif result['status_code'] is 15:
                 self.listbox = self.make_runtime_error_view()
             else:
-                raise ValueError('Unknow status code: %d' % result['status_code'])
+                raise ValueError(f'Unknown status code: {result["status_code"]}')
         else:
             raise ValueError('result shouldn\'t be None')
 
@@ -61,7 +61,7 @@ class ResultView(urwid.Frame):
         status_header = urwid.AttrWrap(urwid.Text('Run Code Status: '), 'body')
         status = urwid.AttrWrap(urwid.Text('Accepted'), 'accepted')
         columns = urwid.Columns([(20, status_header), (20, status)])
-        runtime = urwid.Text('Run time: %s' % self.result['status_runtime'])
+        runtime = urwid.Text(f'Run time: {self.result["status_runtime"]}')
         result_header = urwid.Text('--- Run Code Result: ---', align='center')
         list_items = [
                 result_header,
@@ -79,7 +79,7 @@ class ResultView(urwid.Frame):
         result_header = urwid.Text('--- Run Code Result: ---', align='center')
         passed_header = urwid.Text('Passed test cases:')
         s = self.result['compare_result']
-        passed = urwid.Text('%d/%d' % (s.count('1'), len(s)))
+        passed = urwid.Text(f'{s.count("1")}/{len(s)}')
         your_input_header = urwid.Text('Your input:')
         your_input = urwid.Text(self.result['input'])
         your_answer_header = urwid.Text('Your answer:')
@@ -178,4 +178,3 @@ class ResultView(urwid.Frame):
     def destroy(self):
         if self.loop:
             self.loop.widget = self.host_view
-

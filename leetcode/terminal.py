@@ -4,14 +4,14 @@ import logging
 from threading import Thread
 import urwid
 from .leetcode import Leetcode, Quiz
-from views.home import HomeView
-from views.detail import DetailView
-from views.help import HelpView
-from views.loading import *
-from views.viewhelper import *
-from views.result import ResultView
+from .views.home import HomeView
+from .views.detail import DetailView
+from .views.help import HelpView
+from .views.loading import *
+from .views.viewhelper import *
+from .views.result import ResultView
 from .config import config
-import auth
+from . import auth
 from .code import *
 
 palette = [
@@ -78,8 +78,7 @@ class Terminal(object):
             self.goto_view(self.make_quit_confirmation())
 
         elif key is 's':
-            if not self.is_home:
-                self.goto_view(self.make_submit_confirmation())
+            self.goto_view(self.make_submit_confirmation())
 
         elif not self.is_home and (key is 'left' or key is 'h'):
             self.go_back()
@@ -152,7 +151,7 @@ class Terminal(object):
         if self.leetcode.is_login:
             columns = [
                 ('fixed', 15, urwid.Padding(urwid.AttrWrap(
-                    urwid.Text('%s' % config.username),
+                    urwid.Text(f'{config.username}'),
                     'head', ''))),
                 urwid.AttrWrap(urwid.Text('You have solved %d / %d problems. ' %
                     (len(self.leetcode.solved), len(self.leetcode.quizzes))), 'head', ''),
@@ -233,19 +232,19 @@ class Terminal(object):
 
             self.end_loading()
             if code < -1:
-                toast = Toast('error: %s' % r[1], 10 + len(r[1]), self.current_view, self.loop)
+                toast = Toast(f'error: {r[1]}', 10 + len(r[1]), self.current_view, self.loop)
                 toast.show()
             else:
                 try:
                     result = ResultView(quiz, self.detail_view, r[1], loop=self.loop)
                     result.show()
                 except ValueError as e:
-                    toast = Toast('error: %s' % e, 10 + len(str(e)), self.current_view, self.loop)
+                    toast = Toast(f'error: {e}')
                     toast.show()
             delay_refresh(self.loop)
         else:
             self.end_loading()
-            toast = Toast('error: %s' % text_or_id, 10 + len(text_or_id), self.current_view, self.loop)
+            toast = Toast(f'error: {text_or_id}', 10 + len(text_or_id), self.current_view, self.loop)
             toast.show()
             self.logger.error('send data fail')
 
@@ -263,7 +262,7 @@ class Terminal(object):
             self.loop.run()
         except KeyboardInterrupt:
             self.logger.info('Keyboard interrupt')
-        except Exception,e:
+        except Exception as e:
             self.logger.exception("Fatal error in main loop")
         finally:
             self.clear_thread()

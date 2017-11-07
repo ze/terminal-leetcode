@@ -15,11 +15,11 @@ class ItemWidget(urwid.WidgetWrap):
         self.id = data.id
         self.data = data
         lockbody = 'body' if not self.data.locked else 'lock'
-        pass_symbol = u''
+        pass_symbol = ''
         if self.data.submission_status == 'ac':
-            pass_symbol = u'\u2714'
+            pass_symbol = '\u2714'
         elif self.data.submission_status == 'notac':
-            pass_symbol = u'\u2718'
+            pass_symbol = '\u2718'
         text = str(self.data.id)
         mark = make_mark(marks, self.data.id)
         self.item = [

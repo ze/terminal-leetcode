@@ -55,7 +55,7 @@ def unique_file_name(filepath):
     index = 1
     while os.path.exists(filepath):
         filepath =  os.path.join(path, filename + '-' + str(index) + ext)
-        index = index + 1
+        index += 1
     return filepath
 
 def get_code_file_path(quiz_id):
