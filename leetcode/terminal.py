@@ -56,14 +56,14 @@ class Terminal(object):
 
     def keystroke(self, key):
         if self.quit_confirm_view and self.current_view == self.quit_confirm_view:
-            if key is 'y':
+            if key in ('enter', 'y'):
                 raise urwid.ExitMainLoop()
             else:
                 self.go_back()
 
         elif self.submit_confirm_view and self.current_view == self.submit_confirm_view:
             self.go_back()
-            if key is 'y':
+            if key in ('enter', 'y'):
                 self.send_code(self.detail_view.quiz)
 
         elif self.current_view == self.search_view:
@@ -81,7 +81,7 @@ class Terminal(object):
             if not self.is_home:
                 self.goto_view(self.make_submit_confirmation())
 
-        elif not self.is_home and (key is 'left' or key is 'h'):
+        elif not self.is_home and key in ('left', 'h'):
             self.go_back()
 
         elif key is 'H':
@@ -93,7 +93,7 @@ class Terminal(object):
             if self.is_home:
                 self.reload_list()
 
-        elif key is 'f':
+        elif key in ('f', ':'):
             if self.is_home:
                 self.enter_search()
 
